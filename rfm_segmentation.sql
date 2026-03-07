@@ -120,8 +120,7 @@ FROM rfm_table
 GROUP BY segment
 ORDER BY total_revenue DESC;
 -- INSIGHT: At Risk have a large customer count and decent revenue, so they are a prime target for retention efforts.
--- Champion will likely be small in count but huge in revenue.
-
+-- Champion have around 6k less customers than At Risk and $3m less in total revenue but higher avg spend and avg orders per customer
 
 -- ============================================================
 -- SECTION C: REVENUE CONCENTRATION
@@ -142,6 +141,7 @@ ORDER BY segment_revenue DESC;
 -- SECTION D: TOP CUSTOMERS IN EACH SEGMENT
 -- ============================================================
 -- highest-value customer is at At Risk segment with a single order of $13k
+-- top 5 highest-value customers are either cannot lose them or champion with the first one being at risk
 SET search_path TO olist;
 SELECT
     segment,
@@ -156,13 +156,13 @@ FROM (
     FROM rfm_table
 ) ranked
 WHERE rank_in_segment <= 5
-ORDER BY segment, monetary DESC;
+ORDER BY monetary DESC;
 
 
 -- ============================================================
 -- SECTION E: GEOGRAPHIC BREAKDOWN BY SEGMENT
 -- ============================================================
--- SP states have a large number of potential loyalist but also high count of lost customers
+-- SP states have a large number of potential loyalist around 11k but also highest count of lost customers of 2.7k compared to other states
 SET search_path TO olist;
 SELECT
     co.customer_state,
